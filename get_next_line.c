@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gapima <gapima@student.42.fr>              +#+  +:+       +#+        */
+/*   By: glima <glima@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 16:44:15 by gapima            #+#    #+#             */
-/*   Updated: 2023/11/22 17:28:31 by gapima           ###   ########.fr       */
+/*   Created: 2023/11/27 10:01:16 by glima             #+#    #+#             */
+/*   Updated: 2023/11/27 12:23:42 by glima            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char    *ft_get_line(int fd, char *str)
+static char	*ft_get_line(int fd, char *str)
 {
 	char	*temp;
 	int		temp_len;
@@ -21,7 +21,7 @@ char    *ft_get_line(int fd, char *str)
 	if (!temp)
 		return (NULL);
 	temp_len = 1;
-	while (ft_strrchr(str, '\n') == NULL)
+	while (ft_strrchr(str, '\n') == NULL && temp_len != 0)
 	{
 		temp_len = read(fd, temp, BUFFER_SIZE);
 		if (temp_len < 0)
@@ -49,7 +49,7 @@ static char	*ft_current_line(char *str, char *line)
 		line = malloc((count + 2) * sizeof(char));
 	else if (str[count] == '\0')
 		line = malloc((count + 1) * sizeof(char));
-	if (line == NULL)
+	if (!line)
 		return (NULL);
 	count = -1;
 	while (str[++count] != '\n' && str[count] != '\0')
@@ -60,16 +60,46 @@ static char	*ft_current_line(char *str, char *line)
 	return (line);
 }
 
-static char    *get_next_line(int fd)
+static char	*ft_get_line_rest(char *str)
 {
-    static char		*next_line;
+	size_t		count;
+	size_t		str_len;
+	size_t		rest_count;
+	char		*rest;
+
+	count = 0;
+	while (str[count] != '\0' && str[count] != '\n')
+		count++;
+	if (str[count] == '\0')
+	{
+		free(str);
+		return (NULL);
+	}
+	str_len = ft_strlen(str);
+	rest = malloc(sizeof(char) * (str_len - count));
+	if (!rest)
+		return (NULL);
+	count++;
+	rest_count = 0;
+	while (str[count] != '\0')
+		rest[rest_count++] = str[count++];
+	rest[rest_count] = '\0';
+	free(str);
+	return (rest);
+}
+
+char	*get_next_line(int fd)
+{
+	static char		*next_line;
 	char			*current_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	next_line = ft_get_line(fd, next_line);
-	if (next_line == NULL)
+	if (!next_line)
 		return (NULL);
 	current_line = NULL;
 	current_line = ft_current_line(next_line, current_line);
+	next_line = ft_get_line_rest(next_line);
+	return (current_line);
 }
