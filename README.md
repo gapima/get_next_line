@@ -19,6 +19,7 @@ To compile the GNL project, simply use the provided Makefile. Here are some comm
 - **Running:** Run the compiled program using `./gnl test_file.txt`.
 - **Cleaning:** To clean up the compiled files, use `make clean`.
 - **Full Clean:** For a complete clean, removing binaries and object files, use `make fclean`.
+- **Recompilation:** If you want to recompile everything, use `make re`.
 
 Feel free to explore the Makefile for more commands and customizations!
 
