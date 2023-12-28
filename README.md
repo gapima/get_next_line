@@ -12,9 +12,15 @@ Hey there, line lovers! Get Next Line (GNL) is your ticket to reading lines one 
 - **Multi-Line Madness:** Handling multiple files simultaneously like a boss.
 - **Buffer Buffet:** Smoothing the way we handle those buffers for an epic reading experience.
 
-## Prerequisites
-- A Unix-based OS (Linux or macOS) for the compilation party.
-- GCC or Clang compiler ready to rock!
+## Using the Makefile
+To compile the GNL project, simply use the provided Makefile. Here are some commands:
+
+- **Compilation:** Use `make` to compile the program.
+- **Running:** Run the compiled program using `./gnl test_file.txt`.
+- **Cleaning:** To clean up the compiled files, use `make clean`.
+- **Full Clean:** For a complete clean, removing binaries and object files, use `make fclean`.
+
+Feel free to explore the Makefile for more commands and customizations!
 
 ## How to Dive In
 1. Clone the magic:
